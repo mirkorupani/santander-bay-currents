@@ -1,0 +1,143 @@
+{
+    "randomState": 42,
+
+    "nc_files": [
+        "static\\input\\hydros\\01_2021.nc",
+        "static\\input\\hydros\\02_2021.nc",
+        "static\\input\\hydros\\03_2022.nc",
+        "static\\input\\hydros\\04_2022.nc"
+    ],
+
+    "n_components": 0.95,
+
+    "predictands": {
+        "predictandsFolder": "static\\input\\predictands",
+        "station": 134,
+        "hisFile":[
+            "static\\input\\hydros\\01_2021.nc",
+            "static\\input\\hydros\\02_2021.nc",
+            "static\\input\\hydros\\03_2022.nc",
+            "static\\input\\hydros\\04_2022.nc"
+        ],
+        "removeTimesteps": 168,
+        "variables": ["u_x", "u_y", "waterlevel"],
+        "sigmaLayer": -0.1,
+        "resample": "mean"
+    },
+
+    "predictors": {
+        "predictorsFolder": "static\\input\\predictors",
+        "wind": "meteogalicia",
+        "hydro": {
+            "dataset_id": ["cmems_mod_ibi_phy_anfc_0.027deg-2D_PT1H-m", "cmems_mod_ibi_phy_anfc_0.027deg-3D_P1D-m"],
+            "point": [43.6, -3.742],
+            "variables": [["ubar", "vbar", "zos"], ["thetao", "so"]]
+
+        },
+        "discharge": "C:\\TFM\\input\\qsim_Puntal_drag.mat",
+        "tidalRange": "C:\\TFM\\input\\REDMAR_Santander_PdE.mat"
+    },
+
+    "preprocess": {
+        "trainTestSplit": {
+            "method": "temporal",
+            "testSize": 0.2
+        },
+        "scale": {
+            "method": "standard"
+        },
+        "dimReduction": {
+            "method": null,
+            "nComponents": 3
+        }
+    },
+
+    "model": {
+        "method": "lstm",
+
+        "analogues": {
+            "clustering": "spectral",
+            "nAnalogues": 500,
+            "regressor": "knn",
+            "knn": {
+                "n_neighbors": 5,
+                "weights": "distance",
+                "metric": "minkowski"
+            },
+            "krr": {
+                "kernel": "rbf",
+                "alpha": 1,
+                "gamma": null
+            }
+        },
+
+        "adaBoost": {
+            "nSplits": 5,
+            "estimator": {
+                "maxDepth": [3, 5, 7, 9],
+                "criterion": ["squared_error"],
+                "splitter": ["best"],
+                "minSamplesSplit": [2],
+                "minSamplesLeaf": [1]
+            },
+            "nEstimators": [30, 50, 100, 150],
+            "learningRate": [0.00001, 0.0001, 0.001, 0.01, 0.1],
+            "loss": ["square", "exponential", "linear"],
+            "scoring": "neg_mean_squared_error",
+            "nJobs": -1
+        },
+
+        "lstm": {
+            "differentNetworks": [["u_x", "u_y", "waterlevel"]],
+            "nTimesteps": 10,
+            "stepSize": 1,
+            "lstmLayers": {
+                "minLstmLayers": 1,
+                "maxLstmLayers": 3,
+                "minLstmUnits": 50,
+                "maxLstmUnits": 200,
+                "stepLstmUnits": 50
+            },
+            "dropout": {
+                "minDropout": 0.1,
+                "maxDropout": 0.5,
+                "stepDropout": 0.1
+            },
+            "denseLayers": {
+            "minDenseLayers": 1,
+            "maxDenseLayers": 3,
+            "minDenseUnits": 50,
+            "maxDenseUnits": 200,
+            "stepDenseUnits": 50
+            },
+            "train": {
+                "optimizer": "adam",
+                "loss": "mean_squared_error",
+                "metrics": [
+                    "mean_squared_error",
+                    "mean_absolute_error"
+                ],
+                "learningRates": [0.00001, 0.0001, 0.001, 0.01],
+                "earlyStopping": {
+                    "monitor": "val_loss",
+                    "patience": 15
+                },
+                "batch": {
+                    "minBatchSize": 256,
+                    "maxBatchSize": 1024,
+                    "stepBatchSize": 256
+                }
+            },
+            "hyperband": {
+                "objective": "val_loss",
+                "direction": "min",
+                "maxEpochs": 500,
+                "factor": 3,
+                "overwrite": false,
+                "directory": "ktuner",
+                "projectName": "lstm"
+            }
+        }
+    }
+    
+}
