@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map with Points</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="map"></div>
+    <div id="right-panel">
+        <div id="cluster-menu">
+            <label for="num-clusters">Number of clusters:</label>
+            <input type="number" id="num-clusters" name="num-clusters" min="2" max="20" value="15">
+            <button id="clusterize-button">Clusterize</button>
+        </div>
+        <div id="cluster-loading">
+            <p>Getting clusters...</p>
+            <div class="loader"></div>
+        </div>
+        <div id="output"></div>
+        <div id="loading" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <p>Training model...</p>
+            <div class="loader"></div>
+        </div>
+        <div class="plot-container">
+            <div class="plot" id="plot-ux"></div>
+            <div class="scatter" id="scatter-ux"></div>
+        </div>
+        <div class="plot-container">
+            <div class="plot" id="plot-uy"></div>
+            <div class="scatter" id="scatter-uy"></div>
+        </div>
+        <div class="plot-container">
+            <div class="plot" id="plot-waterlevel"></div>
+            <div class="scatter" id="scatter-waterlevel"></div>
+        </div>
+    </div>
+    <script type="module" src="leaflet-functions.js"></script>
+    <script type="module" src="plots.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
