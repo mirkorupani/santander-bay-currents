@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
-from auxFunc import willmottSkillIndex, ksStatistic, pearsonCorrCoeff, perkinsSkillScore
+from prediction.auxFunc import willmottSkillIndex, ksStatistic, pearsonCorrCoeff, perkinsSkillScore
 
 
 def scatter_recon(model, reconstruction, title=None, returnMetrics=False, metricsToPlot=["mae", "bias", "willmott", "pearson", "perkin"]):

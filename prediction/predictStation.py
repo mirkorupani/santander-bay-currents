@@ -1,7 +1,7 @@
 import json
-from predictors import Predictors
-from predictands import Predictands
-from predictionMatrix import PredictionMatrix
+from prediction.predictors import Predictors
+from prediction.predictands import Predictands
+from prediction.predictionMatrix import PredictionMatrix
 import pandas as pd
 from time import time
 from auxFunc import concatCamel

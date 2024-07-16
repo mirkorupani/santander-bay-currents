@@ -1,5 +1,5 @@
 import json
-from auxFunc import getTempExt, getCoord, datenumToDatetime
+from prediction.auxFunc import getTempExt, getCoord, datenumToDatetime
 import calendar
 import xarray as xr
 import copernicusmarine
