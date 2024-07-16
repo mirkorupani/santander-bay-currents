@@ -4,7 +4,7 @@ from prediction.predictands import Predictands
 from prediction.predictionMatrix import PredictionMatrix
 import pandas as pd
 from time import time
-from auxFunc import concatCamel
+from prediction.auxFunc import concatCamel
 
 
 class PredictStation():
