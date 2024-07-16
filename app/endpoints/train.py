@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models import TrainRequest, TrainResponse
-from predictStation import PredictStation
+from prediction.predictStation import PredictStation
 from app.utils.file_helpers import find_hyperparams
 from getPoints import getPoints
 import json
